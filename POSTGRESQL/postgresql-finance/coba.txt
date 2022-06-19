@@ -1,0 +1,5 @@
+select *from nama-table
+
+
+insert into nama table (.... , ....)
+values ('..' , '..');
