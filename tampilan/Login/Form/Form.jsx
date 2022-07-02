@@ -15,10 +15,10 @@ const TampilanLogin = () => {
     <Form
       name="basic"
       labelCol={{
-        span: 6,
+        span: 7,
       }}
       wrapperCol={{
-        span: 12,
+        span: 11,
       }}
       initialValues={{
         remember: true,
@@ -26,14 +26,16 @@ const TampilanLogin = () => {
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
+
+
     >
       <Form.Item
-        label="Username"
-        name="username"
+        label="Organization Name"
+        name="organization name"
         rules={[
           {
             required: true,
-            message: 'Please input your username!',
+            message: 'Please input your organization name!',
           },
         ]}
       >
@@ -41,33 +43,33 @@ const TampilanLogin = () => {
       </Form.Item>
 
       <Form.Item
-        label="Password"
-        name="password"
+        label="Business Location"
+        name="business location"
         rules={[
           {
             required: true,
-            message: 'Please input your password!',
+            message: 'Please input your business location!',
           },
         ]}
       >
         <Input.Password />
       </Form.Item>
 
-      <Form.Item
+      {/* <Form.Item
         name="remember"
         valuePropName="checked"
         wrapperCol={{
-          offset: 1,
+          offset: 7,
           span: 10,
         }}
-      >
-        <Checkbox>Remember me</Checkbox>
-      </Form.Item>
+      > */}
+        {/* <Checkbox>Remember me</Checkbox>
+      </Form.Item> */}
 
       <Form.Item
         wrapperCol={{
-          offset: 1,
-          span: 9,
+          offset: 7,
+          span: 10,
         }}
       >
         <Button type="primary" htmlType="submit">

@@ -5,8 +5,8 @@ import "../Login/Login.css"
 const Login = () => {
   return (
         <div className='bg'>
-            <h2>Masuk</h2>
-            <p>untuk mengakses financial accounting home</p>
+            <h2>Welcome</h2>
+            <p>Let us know where your business is & we'll optimize Acoounting Books accordingly!</p>
             <div className='form'>
                 <Form />
             </div>
