@@ -92,7 +92,7 @@ def up(id):
 @app.route("/delete/<id>", methods=["DELETE"])
 def delete(id):
     try:
-        query = f"delete from dbform where id={id}"
+        query = f"delete from formdb where id={id}"
         curs.execute(query)
         conn.commit()
         return jsonify({
