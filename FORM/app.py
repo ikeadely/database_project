@@ -2,16 +2,16 @@ from flask import Flask, jsonify, request
 import json
 import psycopg2
 
-# from flask_cors import CORS
+from flask_cors import CORS
 
 app = Flask(__name__)
-# CORS(app)
+CORS(app)
 
 conn = psycopg2.connect(host="0.0.0.0", database="dblogin", user="form", password="lupasandi")
 curs = conn.cursor()
 
-@app.route("/baca", methods=['GET'])
-def baca():
+@app.route("/read", methods=['GET'])
+def read():
     try:
         query = f" select * from pricingfeature"
         curs.execute(query)
@@ -25,7 +25,6 @@ def baca():
                 "profesional": i[2],
                 "ultimate": i[3]
             })
-
         return jsonify({
             "data" : data
         })
@@ -146,4 +145,4 @@ def delete(id):
 
 
 if "__name__" == "__main__":
-    app.run(host="0.0.0.0", port=5000)  
+    app.run(debug=True)  
