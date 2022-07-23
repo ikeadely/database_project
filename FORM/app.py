@@ -1,8 +1,5 @@
-from crypt import methods
-import json
-from logging import exception
 from flask import Flask, jsonify, request
-from gridfs import Database
+import json
 import psycopg2
 
 # from flask_cors import CORS
@@ -13,6 +10,27 @@ app = Flask(__name__)
 conn = psycopg2.connect(host="0.0.0.0", database="dblogin", user="form", password="lupasandi")
 curs = conn.cursor()
 
+@app.route("/baca", methods=['GET'])
+def baca():
+    try:
+        query = f" select * from pricingfeature"
+        curs.execute(query)
+        result = curs.fetchall()
+
+        data = []
+        for i in result:
+            data.append({
+                "id": i[0],
+                "standard": i[1],
+                "profesional": i[2],
+                "ultimate": i[3]
+            })
+
+        return jsonify({
+            "data" : data
+        })
+    except Exception as e:
+        print(e)
 @app.route("/get", methods=['GET'])
 def get():
     try:
@@ -38,6 +56,28 @@ def get():
         })
     except Exception as e:
         print(e)
+
+@app.route("/post", methods=["POST"])
+def post():
+    try:
+        payload =json.loads(request.data)
+        standard = payload["standard"]
+        profesional = payload["profesional"]
+        ultimate = payload["ultimate"]
+        query = f"insert into pricingfeature(standard, profesional, ultimate) values ('{standard}', '{profesional}', '{ultimate}')"
+        print(query)
+        curs.execute(query)
+        conn.commit()
+        curs.close()
+        conn.close()
+        return jsonify({
+            "message":"berhasil"
+        }), 200
+    except Exception as e:
+        return jsonify({
+            "message":"gagal",
+            "detailMessage": f"{e}"
+        }),400
 
 @app.route("/add", methods=["POST"])
 def add():
