@@ -104,6 +104,25 @@ def add():
          "detailMessage": f"{e}"   
         }), 400
 
+@app.route("/edit/<id>", methods=["PUT"])
+def edit(id):
+    try:
+        payload = json.loads(request.data)
+        standard = payload["standard"]
+        profesional = payload["profesional"]
+        ultimate = payload["ultimate"]
+        query = f"update pricingfeature set standard=('{standard}'), profesional=('{profesional}'), ultimate=('{ultimate}') where id=({id})"
+        curs.execute(query)
+        conn.commit()
+        return jsonify({
+            "message":"berhasil"
+        }), 200
+    except Exception as e:
+        return jsonify({
+         "message":"gagal",
+         "detailMessage": f"{e}"   
+        }), 400
+
 @app.route("/up/<id>", methods=["PUT"])
 def up(id):
     try:
@@ -146,3 +165,6 @@ def delete(id):
 
 if "__name__" == "__main__":
     app.run(debug=True)  
+
+
+# flask run -h "0.0.0.0" -p 8080
