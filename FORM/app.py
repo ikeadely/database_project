@@ -1,3 +1,4 @@
+from locale import currency
 from ssl import OP_NO_RENEGOTIATION
 from flask import Flask, jsonify, request
 import json
@@ -39,22 +40,26 @@ def read():
 @app.route("/get", methods=['GET'])
 def get():
     try:
-        query = f"select * from formdb"
+        query = f"select * from form"
         curs.execute(query)
         result = curs.fetchall()
 
         data = []
         for i in result:
             data.append({
-                "id": i[0],
-                "namaperusahaan": i[1],
-                "email": i[2],
-                "password": i[3],
-                "negara": i[4],
-                "alamat": i[5],
-                "matauang": i[6],
-                "bahasa": i[7],
-                "zonawaktu": i[8]
+                "form_id": i[0],
+                "organizationname": i[1],
+                "username": i[2],
+                "email": i[3],
+                "password": i[4],
+                "country": i[5],
+                "city": i[6],
+                "address": i[7],
+                "postalcode": i[8],
+                "currency": i[9],
+                "language": i[10],
+                "date": i[11],
+                "note": i[12]
             })
         return jsonify({
             "data" : data
@@ -88,6 +93,18 @@ def post():
 def add():
     try:
         payload = json.loads(request.data)
+        query = f"select a.organizationname, a.username, a.email, a.password, a.country, a.city, a.address, a.postalcode, a.currency, a.language, a.date, a.note"
+            from form where a.username = '{payload['username']}' and password ='{payload['password']}
+        organizationname = payload["organizationname"]
+        username = payload["username"]
+        email = payload["email"]
+        password = payload["password"]
+        country = payload["country"]
+        city = payload["city"]
+        address = payload["addres"]
+        postalcode = payload["postalcode"]
+        currency = payload["currency"]
+        
         namaperusahaan = payload["namaperusahaan"]
         email = payload["email"]
         password = payload["password"]
