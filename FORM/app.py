@@ -1,3 +1,4 @@
+from ssl import OP_NO_RENEGOTIATION
 from flask import Flask, jsonify, request
 import json
 import psycopg2
@@ -10,26 +11,31 @@ CORS(app)
 conn = psycopg2.connect(host="0.0.0.0", database="dblogin", user="form", password="lupasandi")
 curs = conn.cursor()
 
-@app.route("/read", methods=['GET'])
+@app.route("/read", methods=["GET"])
 def read():
     try:
-        query = f" select * from pricingfeature"
-        curs.execute(query)
-        result = curs.fetchall()
-
-        data = []
-        for i in result:
-            data.append({
-                "id": i[0],
-                "standard": i[1],
-                "profesional": i[2],
-                "ultimate": i[3]
-            })
-        return jsonify({
-            "data" : data
-        })
+       query = f" select * from pricingfeature"
+       curs.execute(query)
+       result = curs.fetchall()
+       data = []
+       for i in result:
+           data.append({
+               "id": i[0],
+               "standard": i[1],
+               "profesional": i[2],
+               "ultimate": i[3]
+           })
+       return jsonify({
+           "data" : data
+       })
     except Exception as e:
         print(e)
+
+    response = jsonify(message="Simple server is running")
+    # Enable Access-Control-Allow-Origin
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+   
 @app.route("/get", methods=['GET'])
 def get():
     try:
