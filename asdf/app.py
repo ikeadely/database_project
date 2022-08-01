@@ -40,35 +40,26 @@ def register():
     except Exception as e:
         print(e)
 
-
-@app.route("/login", methods=["GET"])
+@app.route("/login", methods=["GET","POST"])
 def login():
-    try:
-        query = f"select * from register"
-        curs.execute(query)
-        result = curs.fetchall()
-        data = []
-        for i in result:
-            data.append({
-                "form_id": i[0],
-                "username": i[1],
-                "password": i[2]
-            })
-        return jsonify({
-            "data": data
-        })
-    except Exception as e:
-        print(e)
-
+    json=request.json
+    username = json['username']
+    password = json['password']
+    query="select username, password from formuser where username=%s and password=%s"
+    Params = (username, password)
+    curs.execute(query, Params)
+    row = curs.fetchone()
+    if row:
+        print('brhsl')
 
 @app.route("/postregister", methods=["POST"])
-def tambah():
+def postregister():
     try:
         payload = json.loads(request.data)
         organizationname = payload["organizationname"]
         username = payload["username"]
         email = payload["username"]
-        password = payload["payload"]
+        password = payload["password"]
         country = payload["country"]
         province = payload["province"]
         city = payload["city"]
@@ -76,7 +67,7 @@ def tambah():
         postalcode = payload["postalcode"]
         currency = payload["currency"]
         language = payload["language"]
-        query = f"insert into form (organizationname, username, email, password, country, province, city, address, postalcode, currency, language) values ('{organizationname}', '{username}', '{email}', '{password}', '{country}', '{province}', '{city}', '{address}', '{postalcode}', '{currency}', '{language}')"
+        query = f"insert into formuser (organizationname, username, email, password, country, province, city, address, postalcode, currency, language) values ('{organizationname}', '{username}', '{email}', '{password}', '{country}', '{province}', '{city}', '{address}', '{postalcode}', '{currency}', '{language}')"
         curs.execute(query)
         conn.commit()
         return jsonify({
@@ -88,28 +79,17 @@ def tambah():
             "error": f"{e}"
         }), 400
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    info = json.loads(request.data)
-    username = info.get("username", "guest")
-    password = info.get("password", "")
-    user = user.objects(name=username, password=password).first()
 
-    query=f"select username, password from register where username=%s and password=%s"
-    Params = ("username", "password")
-    curs.execute(query, Params)
-    row = Cursor.fetchone()
-
-    if row:
-        return jsonify({
-            "status": 200
-        })
+    # if row:
+    #     return jsonify({
+    #         "status": 200
+    #     })
         # print("berhasil")
-    else:
-        return jsonify({
-        "status": 401,
-        "reason": "Username or Password errror"
-    })
+    # else:
+    #     return jsonify({
+    #     "status": 401,
+    #     "reason": "Username or Password errror"
+    # })
 
 
 if "name"=="main":
